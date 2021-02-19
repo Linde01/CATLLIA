@@ -6,8 +6,6 @@ class SearchResult extends Component {
       return (
       <div className='search-result-item'>
           <SearchResultItem/>
-          <SearchResultItem/>
-          <SearchResultItem/>
       </div>
       );
     }

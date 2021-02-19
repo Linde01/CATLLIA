@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PushpinOutlined, TagOutlined } from '@ant-design/icons';
 
-import './search-result-item.scss'; 
+import './search-result-item.scss'
 
 class SearchResultItem extends Component {
     render() {
