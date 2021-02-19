@@ -5,19 +5,24 @@ import Search from '../feature/search/Search';
 import Map from '../feature/Map/Map';
 import SearchResult from '../feature/search-result/SearchResult';
 
-const { Content } = Layout;
+import './main.scss';
+
+ const { Content } = Layout;
+
 class Main extends Component{
     render() {
-        return  <div>
-            <Content>
+        return (
+         <div className= 'main-layout' >
+            <Content className = 'content'>
                 <Brand/>
                 <Search/>
                 <div className='search-content'>
-                    </div>
                     <Map/>
                     <SearchResult/>
+                    </div>
             </Content>
-            </div>;
+            </div>
+        );
     }
 }
 
