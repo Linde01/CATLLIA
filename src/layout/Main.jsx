@@ -4,6 +4,8 @@ import Brand from '../feature/brand/Brand';
 import Search from '../feature/search/Search';
 import Map from '../feature/Map/Map';
 import SearchResult from '../feature/search-result/SearchResult';
+import { getStores } from '../services/stores';
+import { haversineInKM } from '../utilities/math';
 
 import './main.scss';
 
@@ -11,6 +13,7 @@ import './main.scss';
 
 class Main extends Component{
     state = {
+      stores: [],
         currentPosition: null,
         query: '',
         distance:'1',
@@ -23,13 +26,29 @@ class Main extends Component{
             lng: coords.longitude,
           };
           this.setState({ currentPosition });
+          this.getStores();
         });
       }
-     
       onInputChange(event) {
         const stateKey = event.target.name;
         this.setState({ [stateKey]: event.target.value });
       }
+     
+       async getStores(){
+          const { data } = await getStores();
+          const stores = this.mapStoreDistance(data);
+          this.setState({ stores });
+        }
+
+        mapStoreDistance(data = []) {
+          const stores = data.reduce((mappedStores, store) => {
+            const { lat, lng } = this.state.currentPosition;
+            const distance = haversineInKM(lat, lng, store.latitude, store.longitude);
+            return [...mappedStores, { ...store, distance }];
+          }, []);
+          return stores;
+        }
+      
 
     render() {
         return (
