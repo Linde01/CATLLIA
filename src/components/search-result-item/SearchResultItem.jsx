@@ -5,19 +5,24 @@ import './search-result-item.scss'
 
 class SearchResultItem extends Component {
     render() {
+      const { result } = this.props;
+      const tags = result.tags.split(',');
       return (
         <div className='search-result-item'>
           <div className='result-item__name'>
-            <span>JJ's Chika-an</span>
-            <span className='result-item__distance'>2 km</span>
+            <span>{result.name}</span>
+            <span className='result-item__distance'>{result.distance.toFixed(2)} km</span>
           </div>
           <div className='result-item__description'>
             <PushpinOutlined />
-            <span>Capt. flordelis, Street, Hilongos, Leyte</span>
+            <span>{result.address}</span>
           </div>
           <div>
             <TagOutlined />
-            <span className='tags'>Restaurant</span>
+            {
+              tags && tags.map((tag, index) => <span key= {index} className='tags'>{tag}</span>)
+            }
+            
           </div>
         </div>
       );

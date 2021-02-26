@@ -5,7 +5,9 @@ class SearchResult extends Component {
     render() {
       return (
       <div className='search-result-item'>
-          <SearchResultItem/>
+        { this.props.stores && 
+        this.props.stores.map((store) => (<SearchResultItem key={store.id} result={store}/>
+        )) }
       </div>
       );
     }
