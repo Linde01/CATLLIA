@@ -17,7 +17,12 @@ class Main extends Component{
         currentPosition: null,
         query: '',
         distance:'1',
-    }
+        searchQuery: {
+          distance: 1,
+          query: '',
+          stores: [],
+        },
+      };
 
     componentDidMount() {
         window.navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -48,14 +53,40 @@ class Main extends Component{
           }, []);
           return stores;
         }
-      
+       
+        onSearch(){
+          const { distance, query, stores } = this.state;
+          const filteredStores = this.filterStores({ distance, query, stores });
+
+          const searchQuery = { distance, query, stores: filteredStores };
+          this.setState({ searchQuery });
+        }
+
+
+        filterStores({ distance, query, stores }) {
+          const filteredStores = stores.filter((store) => {
+            const isStoreInRange = store.distance <= parseInt(distance);
+            if (!query || !isStoreInRange) return isStoreInRange;
+            const isStoreQueried =
+              store.name.toLowerCase().includes(query.toLowerCase()) ||
+              store.tags.toLowerCase().includes(query.toLowerCase());
+            return isStoreInRange && isStoreQueried;
+          });
+          return filteredStores;
+        }
+
 
     render() {
         return (
          <div className= 'main-layout' >
             <Content className = 'content'>
                 <Brand/>
-                <Search query={this.state.query} distance={this.state.distance} onChange={(event) => this.onInputChange(event)}/>
+                <Search 
+                query={this.state.query} 
+                distance={this.state.distance} 
+                onChange={(event) => this.onInputChange(event)}
+                onSubmit={() => this.onSearch()}
+                />
                 <div className='search-content'>
                     <Map currentPosition={this.state.currentPosition}
                     distance={ this.state.distance }
